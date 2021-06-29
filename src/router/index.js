@@ -2,8 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Film from '../views/Film.vue'
 import Cinema from '../views/Cinema.vue'
-import Center from '../views/Center.vue'
-import Login from '../views/Login.vue'
+// import Center from '../views/Center.vue'
+// import Login from '../views/Login.vue'
 import Detail from '../views/Detail.vue'
 
 import Nowplaying from '../views/film/Nowplaying.vue'
@@ -36,22 +36,24 @@ const routes = [{
     },
     {
         path: "/center",
-        component: Center
+        component: () =>
+            import ("../views/Center.vue")
     },
     {
         path: "/login",
-        component: Login
+        component: () =>
+            import ("../views/Login.vue")
     },
-    // {
-    //     path: '/detail/:myid', // 动态路由
-    //     component: Detail,
-    //     name: 'zoeDetail'
-    // },
-
     {
-        path: '/detail',
-        component: Detail
+        path: '/detail/:myid', // 动态路由
+        component: Detail,
+        name: 'zoeDetail'
     },
+
+    // {
+    //     path: '/detail',
+    //     component: Detail
+    // },
 
     {
         path: '*', // 通配符

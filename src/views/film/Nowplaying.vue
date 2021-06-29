@@ -1,34 +1,38 @@
 <template>
     <div>
-        nowplaying
         <ul>
-            <li v-for="data in datalist" :key="data.id" @click="handleClick(data.id)">
-                {{ data.title }}
+            <li v-for="data in datalist" :key="data.filmId" @click="handleClick(data.filmId)">
+                <img :src="data.poster" alt="">
+                <h3>{{ data.name }}</h3>
+                <p>{{ data.director }}</p>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data () {
         return {
-            datalist: [
-                {
-                    id: 111,
-                    title: "赌神"
-                },
-                {
-                    id: 222,
-                    title: "花木兰"
-                },
-                {
-                    id: 333,
-                    title: "廉政风云"
-                }
-            ]
+            datalist: []
         }
     },
+
+    mounted() {
+        axios({
+            url: 'https://m.maizuo.com/gateway?cityId=440100&pageNum=1&pageSize=10&type=2&k=2514984',
+            headers: {
+                'X-Client-Info': '{"a":"3000","ch":"1002","v":"5.0.4","e":"1621051243331159158390785"}',
+                'X-Host': 'mall.film-ticket.film.list'
+            },
+            method: "get"
+            }).then(res => {
+            console.log(res.data.data.films)
+            this.datalist = res.data.data.films
+        })
+    },
+
     methods: {
         handleClick(id) {
             // console.log(id)
@@ -38,16 +42,27 @@ export default {
             // this.$router.push(`/detail/${id}`)  // 编程式导航
 
             // 2- 路由名字
-            // this.$router.push({
-            //     name: 'zoeDetail',
-            //     params: {
-            //         myid: id
-            //     }
-            // })
+            this.$router.push({
+                name: 'zoeDetail',
+                params: {
+                    myid: id
+                }
+            })
 
             // 3- query方式跳转详情
-            this.$router.push(`/detail?id=${id}`)
+            // this.$router.push(`/detail?id=${id}`)
         }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    li{
+        overflow: hidden;
+        padding: 10px;
+        img{
+            float: left;
+            width: 100px;
+        }
+    }
+</style>
