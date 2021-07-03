@@ -3,8 +3,11 @@
         <ul>
             <li v-for="data in datalist" :key="data.filmId" @click="handleClick(data.filmId)">
                 <img :src="data.poster" alt="">
-                <h3>{{ data.name }}</h3>
-                <p>{{ data.director }}</p>
+                <h3>{{ data.name }} {{ data.item.name }}</h3>
+                <p style="overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;">主演：{{ data.actors | actorFilter }}</p>
+                <p>{{ data.nation }} | {{ data.runtime }}分钟</p>
             </li>
         </ul>
     </div>
@@ -12,6 +15,12 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
+
+Vue.filter("actorFilter", (actors)=> {
+    if(actors===undefined) return "暂无主演"
+    return actors.map(item => item.name).join(' ')
+})
 export default {
     data () {
         return {
@@ -28,7 +37,7 @@ export default {
             },
             method: "get"
             }).then(res => {
-            console.log(res.data.data.films)
+            // console.log(res.data.data.films)
             this.datalist = res.data.data.films
         })
     },

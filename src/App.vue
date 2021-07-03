@@ -2,7 +2,9 @@
   <div>
     <tabbar></tabbar>
     <!-- 路由容器 -->
-    <router-view></router-view>
+    <section>
+      <router-view></router-view>
+    </section>
   </div>
 </template>
 
@@ -54,5 +56,13 @@ export default {
     padding: 0;
     margin: 0;
     list-style: none;
+  }
+
+  html,body{
+    height: 100%;
+  }
+
+  section{
+    margin-bottom: 50px;
   }
 </style>
