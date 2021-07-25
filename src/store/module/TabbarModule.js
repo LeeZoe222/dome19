@@ -1,5 +1,5 @@
 const module = {
-    namespaced: true,
+    namespaced: true, // 命名空间
     state: {
         isTabbarShow: true
     },
