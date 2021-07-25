@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tabbar></tabbar>
+    <tabbar v-show="isTabbarShow"></tabbar>
     <!-- 路由容器 -->
     <section>
       <router-view></router-view>
@@ -10,6 +10,7 @@
 
 <script>
 import tabbar from './components/Tabbar.vue'
+import { mapState } from 'vuex'  // export { mapState }
 // import axios from 'axios'
 
 // ES6 模块导出
@@ -19,10 +20,19 @@ export default {
 
     }
   },
+
+  computed: {
+    ...mapState('TabbarModule',['isTabbarShow'])
+  },
+
+  mounted () {
+    // console.log(mapState('TabbarModule',['isTabbarShow']))
+  },
+
   components: {
     tabbar
   },
-  mounted() {
+  // mounted() {
     // 1- 后端配置好 cors
     // axios.get("http://www.mei.com/appapi/home/eventForH5?params=%7B%7D&timestamp=1621045513553&summary=14a9527dc01f666c6589d3f8cc0088b6&platform_code=H5").then
     // (res => {
@@ -47,7 +57,7 @@ export default {
     //   console.log(res.data.data.films)
     // })
     
-  }
+  // }
 }
 </script>
 
@@ -63,6 +73,7 @@ export default {
   }
 
   section{
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
+    padding-bottom: 50px;
   }
 </style>

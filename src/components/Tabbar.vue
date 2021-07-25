@@ -20,6 +20,7 @@
         line-height: 50px;
         text-align: center;
         background: white;
+        z-index: 99;
         ul{
             display: flex;
             li{

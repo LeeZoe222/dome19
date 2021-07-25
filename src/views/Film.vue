@@ -6,7 +6,7 @@
             </div>
         </film-swiper>
         <!-- 只有在 Vue 中，组件上写的 class,style 会自动传到组件的根节点上 -->
-        <film-header style="position:sticky;top:0px; background:white;"></film-header>
+        <film-header style="position:sticky;top:0px; background:white;z-index:100;"></film-header>
 
         <router-view></router-view>
     </div>

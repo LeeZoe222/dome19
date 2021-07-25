@@ -1,21 +1,30 @@
 <template>
     <div>
-        <ul>
-            <li v-for="data in datalist" :key="data.filmId" @click="handleClick(data.filmId)">
+        <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+            :immediate-check = "false"
+            >
+            <van-cell v-for="data in datalist" :key="data.filmId" @click="handleClick(data.filmId)">
                 <img :src="data.poster" alt="">
                 <h3>{{ data.name }} {{ data.item.name }}</h3>
                 <p style="overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;">主演：{{ data.actors | actorFilter }}</p>
                 <p>{{ data.nation }} | {{ data.runtime }}分钟</p>
-            </li>
-        </ul>
+            </van-cell>
+        </van-list>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+import http from '@/util/http'
 import Vue from 'vue'
+import { List, Cell } from 'vant';
+import { mapState } from 'vuex';
+Vue.use(List).use(Cell);
 
 Vue.filter("actorFilter", (actors)=> {
     if(actors===undefined) return "暂无主演"
@@ -24,25 +33,58 @@ Vue.filter("actorFilter", (actors)=> {
 export default {
     data () {
         return {
-            datalist: []
+            datalist: [],
+            loading: false,  // 是否正在加载中,防止多次触发问题
+            finished: false,
+            current: 1, // 记录第几页数据
+            total: 0  // 总数据长度
         }
     },
 
     mounted() {
-        axios({
-            url: 'https://m.maizuo.com/gateway?cityId=440100&pageNum=1&pageSize=10&type=2&k=2514984',
+        http({
+            url: `/gateway?cityId=${this.cityId}&pageNum=1&pageSize=10&type=1&k=6218209`,
             headers: {
-                'X-Client-Info': '{"a":"3000","ch":"1002","v":"5.0.4","e":"1621051243331159158390785"}',
                 'X-Host': 'mall.film-ticket.film.list'
             },
             method: "get"
             }).then(res => {
             // console.log(res.data.data.films)
             this.datalist = res.data.data.films
+            this.total = res.data.data.total
         })
     },
 
+    computed: {
+        ...mapState("CityModule",['cityId'])
+    },
     methods: {
+        onLoad() {
+            if(this.datalist.length === this.total && this.datalist.length !== 0){
+                this.finished = true
+                return
+            }
+
+            console.log("底")
+
+            // 1. ajax请求新页面的数据
+            // 2. 合并新数据到老数据
+            // 3. this.loading=false
+
+            this.current++
+            http({
+                url: `/gateway?cityId=${this.cityId}&pageNum=${this.current}&pageSize=10&type=1&k=6218209`,
+                headers: {
+                    'X-Host': 'mall.film-ticket.film.list'
+                },
+                method: "get"
+                }).then(res => {
+                // console.log(res.data.data.films)
+                this.datalist = [...this.datalist,...res.data.data.films]
+
+                this.loading = false
+            })
+        },
         handleClick(id) {
             // console.log(id)
             // location.href = '#/center'
@@ -66,7 +108,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    li{
+    .van-cell{
         overflow: hidden;
         padding: 10px;
         img{
