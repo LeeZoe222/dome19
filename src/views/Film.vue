@@ -18,9 +18,9 @@ import filmSwiper from './film/FilmSwiper.vue'
 export default {
     data(){
         return {
-            imgList: ['https://pic.maizuo.com/usr/movie/aa22ce7e9aa175b6aed9046c0f9b7589.jpg@1024h_768w_50Q?x-oss-process=image/quality,Q_70',
-            'https://pic.maizuo.com/usr/movie/81d34625af66cb93180c173928c44983.jpg@1024h_768w_50Q?x-oss-process=image/quality,Q_70',
-            'https://pic.maizuo.com/usr/movie/7e71e9e03ccc26906d92cbd2495e0cf7.jpg@1024h_768w_50Q?x-oss-process=image/quality,Q_70']
+            imgList: ['https://pic.maizuo.com/usr/movie/fe4692972b73ef0800c223e424a3d636.jpg',
+            'https://pic.maizuo.com/usr/movie/a3d0ad7e62ec8949e54b814779443050.jpg',
+            'https://pic.maizuo.com/usr/movie/bafd877a2772afce131ffa1a237cd766.jpg']
         }
     },
 
