@@ -1,40 +1,42 @@
 <template>
-    <div v-if="filminfo">
+    <v-touch v-on:swiperight="onSwipeRight">
+        <div v-if="filminfo">
 
-        <detail-header v-top :title="filminfo.name"></detail-header>
-        <div :style="{backgroundImage:'url('+filminfo.poster+')'}" style="height:200px;background-size:cover;background-position:center;"></div>
+            <detail-header v-top :title="filminfo.name"></detail-header>
+            <div :style="{backgroundImage:'url('+filminfo.poster+')'}" style="height:200px;background-size:cover;background-position:center;"></div>
 
-        <h3>{{ filminfo.name }}--{{ filminfo.filmType.name }}</h3>
+            <h3>{{ filminfo.name }}--{{ filminfo.filmType.name }}</h3>
 
-        <div>{{ filminfo.category }}</div>
+            <div>{{ filminfo.category }}</div>
 
-        <div>{{ filminfo.premiereAt | dateFilter }}上映</div>
+            <div>{{ filminfo.premiereAt | dateFilter }}上映</div>
 
-        <div>{{ filminfo.nation }} | {{ filminfo.runtime }}分钟</div>
+            <div>{{ filminfo.nation }} | {{ filminfo.runtime }}分钟</div>
 
-        <div :class=" isShow? '' : 'synopsis' ">{{ filminfo.synopsis }}</div>
-        <div style="text-align:center;"><i @click="isShow=!isShow">--</i></div>
+            <div :class=" isShow? '' : 'synopsis' ">{{ filminfo.synopsis }}</div>
+            <div style="text-align:center;"><i @click="isShow=!isShow">--</i></div>
 
-        <h4>演职人员</h4>
-        <detail-swiper :perslide="4" swiperclass="swiper-actors">
-            <div class="swiper-slide" v-for="(data,index) in filminfo.actors" :key="index">
-                <img :src="data.avatarAddress" alt="">
-                <div style="text-align:center;">
-                    <div>{{ data.name }}</div>
-                    <div>{{ data.role }}</div>
+            <h4>演职人员</h4>
+            <detail-swiper :perslide="4" swiperclass="swiper-actors">
+                <div class="swiper-slide" v-for="(data,index) in filminfo.actors" :key="index">
+                    <img :src="data.avatarAddress" alt="">
+                    <div style="text-align:center;">
+                        <div>{{ data.name }}</div>
+                        <div>{{ data.role }}</div>
+                    </div>
                 </div>
-            </div>
-        </detail-swiper>
-        <h4>剧照</h4>
-        <detail-swiper :perslide="3" swiperclass="swiper-photos">
-            <div class="swiper-slide" v-for="(data,index) in filminfo.photos" :key="index">
-                <div :style="{backgroundImage:'url('+data+')'}" style="height:100px;background-size:cover;background-position:center;" @click="handlePreview(index)">
+            </detail-swiper>
+            <h4>剧照</h4>
+            <detail-swiper :perslide="3" swiperclass="swiper-photos">
+                <div class="swiper-slide" v-for="(data,index) in filminfo.photos" :key="index">
+                    <div :style="{backgroundImage:'url('+data+')'}" style="height:100px;background-size:cover;background-position:center;" @click="handlePreview(index)">
 
+                    </div>
                 </div>
-            </div>
-        </detail-swiper>
+            </detail-swiper>
         
-    </div>
+        </div>
+    </v-touch>
 </template>
 
 <script>
@@ -44,6 +46,8 @@ import moment from 'moment'
 import detailSwiper from './detail/DetailSwiper.vue'
 import detailHeader from './detail/DetailHeader.vue'
 
+import VueTouch from 'vue-touch'
+Vue.use(VueTouch, {name: 'v-touch'})
 import { ImagePreview } from 'vant'
 import { mapMutations } from 'vuex'
 
@@ -91,6 +95,10 @@ export default {
                 closeable: true,
                 closeIconPosition: 'top-left'
             })
+        },
+        onSwipeRight() {
+            // console.log("滑动")
+            this.$router.back()
         }
     },
     mounted() {

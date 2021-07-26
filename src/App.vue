@@ -76,4 +76,8 @@ export default {
     /* margin-bottom: 50px; */
     padding-bottom: 50px;
   }
+
+  *{
+    touch-action: manipulation;
+  }
 </style>
